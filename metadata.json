@@ -1,0 +1,7 @@
+{
+  "name": "Copy of PixelPerfect Pro - Premium Photo Editing",
+  "description": "A modern SaaS-style professional photo editing service platform featuring AI-assisted analysis, a streamlined workflow, and high-quality retouching solutions.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
