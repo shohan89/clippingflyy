@@ -4,6 +4,99 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { SERVICES } from '../constants';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
 
+// --- Specialized Component Sections ---
+
+const ComparisonTable = () => (
+  <div className="grid md:grid-cols-2 gap-8 my-16">
+    <div className="p-10 bg-slate-50 rounded-[3rem] border-2 border-slate-100">
+      <h3 className="text-2xl font-black text-rose-500 mb-6 flex items-center gap-3">✕ Automated AI</h3>
+      <ul className="space-y-4 text-slate-600 font-medium">
+        <li>Jagged, pixelated edges</li>
+        <li>Loss of fine hair/fur details</li>
+        <li>Incorrect shadow perspective</li>
+      </ul>
+    </div>
+    <div className="p-10 bg-blue-50 rounded-[3rem] border-2 border-blue-100 ring-4 ring-blue-50">
+      <h3 className="text-2xl font-black text-blue-600 mb-6 flex items-center gap-3">✓ Our Manual Pen Tool</h3>
+      <ul className="space-y-4 text-slate-800 font-bold">
+        <li>Smooth, organic vector curves</li>
+        <li>100% anchor point precision</li>
+        <li>Triple-stage quality review</li>
+      </ul>
+    </div>
+  </div>
+);
+
+const ClippingComplexity = () => {
+  const tiers = [
+    { t: "Basic", d: "Simple shapes (Books, Boxes)", p: "$0.49" },
+    { t: "Simple", d: "Curved edges (Shoes, Hats)", p: "$0.95" },
+    { t: "Medium", d: "Interior holes (Chairs, Bags)", p: "$2.50" },
+    { t: "Complex", d: "Intricate details (Jewelry, Bikes)", p: "$5.00" },
+    { t: "Super", d: "Custom complex (Nets, Mesh)", p: "Quote" }
+  ];
+  return (
+    <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mt-12">
+      {tiers.map((tier, i) => (
+        <div key={i} className="bg-white p-6 rounded-3xl border border-slate-100 text-center hover:shadow-xl transition-all">
+          <h4 className="font-black text-slate-900 mb-2">{tier.t}</h4>
+          <p className="text-xs text-slate-500 mb-4 h-8">{tier.d}</p>
+          <div className="text-xl font-black text-blue-600">{tier.p}</div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const MarketplaceCompliance = () => (
+  <div className="bg-slate-900 rounded-[3rem] p-12 text-white my-20">
+    <h3 className="text-3xl font-black mb-8 text-center">Marketplace Optimized</h3>
+    <div className="grid md:grid-cols-3 gap-8">
+      {[
+        { n: "Amazon", r: "Pure white (255,255,255), 1000px+ height, sRGB" },
+        { n: "eBay", r: "Minimum 500px, JPEG/PNG, No watermarks" },
+        { n: "Shopify", r: "Transparent PNG, 1:1 Aspect Ratio, < 20MB" }
+      ].map((m, i) => (
+        <div key={i} className="bg-white/5 p-6 rounded-2xl border border-white/10">
+          <div className="font-black text-blue-400 mb-2 uppercase text-xs tracking-widest">{m.n}</div>
+          <p className="text-slate-400 text-sm leading-relaxed">{m.r}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const GhostMannequinSteps = () => (
+  <div className="py-20">
+    <h3 className="text-4xl font-black text-center mb-12">Our 3D Hollow Process</h3>
+    <div className="grid md:grid-cols-3 gap-10">
+      {[
+        { s: "1. Outer Frame", d: "We take the main shot of the garment on the mannequin." },
+        { s: "2. Inner Neck", d: "We combine the 'neck shot' to reveal the inside branding." },
+        { s: "3. 3D Stitching", d: "We merge parts seamlessly to create the 'invisible' look." }
+      ].map((step, i) => (
+        <div key={i} className="text-center space-y-4">
+          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-black text-xl mx-auto">{i+1}</div>
+          <h4 className="font-bold text-xl">{step.s}</h4>
+          <p className="text-slate-500">{step.d}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+const ColorChangeBenefits = () => (
+  <div className="bg-blue-600 rounded-[3rem] p-12 text-white my-20 text-center">
+    <h3 className="text-4xl font-black mb-6">Cut Photography Costs by 80%</h3>
+    <p className="text-xl text-blue-100 max-w-2xl mx-auto mb-10">Don't shoot every color variant. Shoot one high-res master photo and let us generate every SKU accurately matching your Pantone swatches.</p>
+    <div className="flex flex-wrap justify-center gap-4">
+      {['Pantone Matching', 'Texture Preservation', 'Shadow Integrity', 'Bulk Variations'].map((f, i) => (
+        <span key={i} className="px-6 py-2 bg-white/20 rounded-full font-bold text-sm">{f}</span>
+      ))}
+    </div>
+  </div>
+);
+
 const ServiceDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const service = SERVICES.find(s => s.slug === slug);
@@ -14,18 +107,67 @@ const ServiceDetail: React.FC = () => {
 
   if (!service) return <Navigate to="/" replace />;
 
-  const clippingTiers = [
-    { title: "Basic", desc: "Simple round/square objects like books, boxes, or phones.", price: "$0.49", icon: "📦" },
-    { title: "Simple", desc: "Objects with slight curves and few holes like shoes or hats.", price: "$0.95", icon: "🧢" },
-    { title: "Medium", desc: "Multiple holes and complex shapes like chairs or jewelry.", price: "$2.50", icon: "🪑" },
-    { title: "Complex", desc: "Intricate details like bicycles, nets, or complex machinery.", price: "$5.00", icon: "🚲" },
-    { title: "Super Complex", desc: "Jewelry or objects with hundreds of anchor points.", price: "Custom", icon: "💎" }
-  ];
+  const renderSpecificContent = () => {
+    switch (slug) {
+      case 'clipping-path':
+        return (
+          <>
+            <ComparisonTable />
+            <h3 className="text-4xl font-black text-center mt-24 mb-6">Pricing Complexity</h3>
+            <p className="text-center text-slate-500 mb-12">Fair and transparent pricing based on the time required per path.</p>
+            <ClippingComplexity />
+          </>
+        );
+      case 'background-removal':
+        return <MarketplaceCompliance />;
+      case 'ghost-mannequin':
+        return <GhostMannequinSteps />;
+      case 'color-change':
+        return <ColorChangeBenefits />;
+      case 'photo-retouching':
+        return (
+          <div className="grid md:grid-cols-2 gap-12 my-24">
+            <div className="space-y-6">
+              <h3 className="text-3xl font-black">E-commerce Retouching</h3>
+              <p className="text-slate-600 leading-relaxed">Focus on dust removal, scratch fixing, and shape correction to make products look studio-perfect for catalogs.</p>
+              <ul className="space-y-3 font-bold text-slate-800">
+                <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Dust & Scratch Removal</li>
+                <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Shape Alignment (Liquify)</li>
+                <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Reflection Removal</li>
+              </ul>
+            </div>
+            <div className="space-y-6">
+              <h3 className="text-3xl font-black">Model & Fashion</h3>
+              <p className="text-slate-600 leading-relaxed">High-end skin retouching using frequency separation while preserving natural pores and textures.</p>
+              <ul className="space-y-3 font-bold text-slate-800">
+                <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Frequency Separation</li>
+                <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Digital Makeup Enhancement</li>
+                <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Clothing Crease Removal</li>
+              </ul>
+            </div>
+          </div>
+        );
+      case 'image-masking':
+        return (
+          <div className="py-20 text-center space-y-8">
+            <h3 className="text-4xl font-black">Mastering the Intricate</h3>
+            <p className="text-xl text-slate-500 max-w-3xl mx-auto">Standard paths fail at hair and fur. We use advanced alpha channel masking to ensure every single strand is preserved perfectly against any new background.</p>
+            <div className="flex justify-center gap-20 py-10">
+               <div><div className="text-5xl mb-2">🐈</div><div className="font-bold">Fur & Pet</div></div>
+               <div><div className="text-5xl mb-2">💇</div><div className="font-bold">Model Hair</div></div>
+               <div><div className="text-5xl mb-2">🌿</div><div className="font-bold">Fine Foliage</div></div>
+            </div>
+          </div>
+        );
+      default:
+        return <div className="py-20 text-center text-slate-400">Custom technical specifications available upon request.</div>;
+    }
+  };
 
   return (
     <div className="pt-20 min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative py-24 lg:py-36 bg-slate-950 overflow-hidden">
+      <section className="relative py-24 lg:py-40 bg-slate-950 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-600/10 blur-[120px] rounded-full translate-x-1/2" />
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
@@ -33,19 +175,19 @@ const ServiceDetail: React.FC = () => {
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/20 text-blue-400 rounded-full text-xs font-black tracking-widest uppercase border border-blue-500/30">
                 Premium {service.title} Service
               </div>
-              <h1 className="text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter">
-                Manual <span className="text-blue-500">{service.title}</span> <br /> 
-                for Flawless Results
+              <h1 className="text-5xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter">
+                {service.title.split(' ')[0]} <br />
+                <span className="text-blue-500">{service.title.split(' ').slice(1).join(' ')}</span>
               </h1>
               <p className="text-xl text-slate-400 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium">
-                {service.fullDescription} Don't let jagged edges ruin your brand. We provide 100% manual Pen-Tool paths with pixel-perfect accuracy.
+                {service.fullDescription}
               </p>
               <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
-                <Link to="/free-trial" className="px-12 py-5 bg-blue-600 text-white rounded-2xl font-black text-lg hover:bg-blue-700 shadow-2xl transition-all">
-                  Get My Free Trial
+                <Link to="/free-trial" className="px-12 py-6 bg-blue-600 text-white rounded-[2rem] font-black text-xl hover:bg-blue-700 shadow-2xl transition-all hover:scale-105">
+                  Get Free Trial
                 </Link>
-                <Link to="/contact" className="px-12 py-5 bg-slate-800 text-white rounded-2xl font-black text-lg hover:bg-slate-700 transition-all">
-                  Request a Quote
+                <Link to="/contact" className="px-12 py-6 bg-slate-800 text-white rounded-[2rem] font-black text-xl hover:bg-slate-700 transition-all">
+                  Custom Quote
                 </Link>
               </div>
             </div>
@@ -59,154 +201,46 @@ const ServiceDetail: React.FC = () => {
         </div>
       </section>
 
-      {/* Comparison Section (Mandatory for High-End Conversion) */}
-      <section className="py-24 bg-white">
+      {/* Main Content Area */}
+      <section className="py-24">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">Manual Precision vs. AI Laziness</h2>
-            <p className="text-slate-500 text-lg max-w-2xl mx-auto">Why pro brands never use Magic Wand or automated AI tools for clipping.</p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="p-10 bg-slate-50 rounded-[3rem] border-2 border-slate-100">
-               <h3 className="text-2xl font-black text-slate-900 mb-6 flex items-center gap-3">
-                 <span className="text-rose-500">✕</span> AI / Magic Wand
-               </h3>
-               <ul className="space-y-4">
-                 {['Jagged, pixelated edges', 'Misses fine details & holes', 'Unnatural curves', 'Zero quality accountability'].map((item, i) => (
-                   <li key={i} className="flex items-center gap-3 text-slate-600 font-medium">
-                     <div className="w-1.5 h-1.5 bg-rose-400 rounded-full" /> {item}
-                   </li>
-                 ))}
-               </ul>
-            </div>
-            <div className="p-10 bg-blue-50 rounded-[3rem] border-2 border-blue-100 ring-4 ring-blue-50">
-               <h3 className="text-2xl font-black text-blue-600 mb-6 flex items-center gap-3">
-                 <span className="text-emerald-500">✓</span> Our Manual Pen Tool
-               </h3>
-               <ul className="space-y-4">
-                 {['Smooth, organic vector curves', 'Preserves every single anchor point', 'Custom multi-path options', '3-stage human verification'].map((item, i) => (
-                   <li key={i} className="flex items-center gap-3 text-slate-800 font-bold">
-                     <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" /> {item}
-                   </li>
-                 ))}
-               </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Complexity Breakdown Section */}
-      {slug === 'clipping-path' && (
-        <section className="py-24 bg-slate-50">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">Complexity & Pricing</h2>
-              <p className="text-slate-500 text-lg">We offer flat-rate pricing based on the intricacy of your products.</p>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6">
-              {clippingTiers.map((tier, i) => (
-                <div key={i} className="bg-white p-8 rounded-[2.5rem] shadow-sm hover:shadow-xl transition-all border border-slate-100 flex flex-col items-center text-center">
-                  <div className="text-5xl mb-6">{tier.icon}</div>
-                  <h4 className="text-xl font-black text-slate-900 mb-3">{tier.title}</h4>
-                  <p className="text-slate-500 text-sm mb-6 flex-grow">{tier.desc}</p>
-                  <div className="text-2xl font-black text-blue-600">{tier.price}</div>
+          {renderSpecificContent()}
+          
+          {/* Universal Feature Grid for all services */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-24">
+            {service.features.map((feature, i) => (
+              <div key={i} className="bg-slate-50 p-8 rounded-[2.5rem] border border-slate-100 flex items-start gap-4 hover:bg-white hover:shadow-xl transition-all">
+                <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" strokeWidth="3" strokeLinecap="round"/></svg>
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Quality Control Section (The "PathEdits" edge) */}
-      <section className="py-24 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
-            <div className="relative order-2 lg:order-1">
-               <div className="absolute -inset-10 bg-blue-600/5 blur-3xl rounded-full" />
-               <div className="relative grid grid-cols-2 gap-4">
-                 <div className="space-y-4">
-                   <div className="bg-blue-600 h-64 rounded-3xl flex items-center justify-center text-white text-5xl font-black shadow-2xl">QA 1</div>
-                   <div className="bg-slate-900 h-40 rounded-3xl flex items-center justify-center text-white text-3xl font-bold">Zoom 300%</div>
-                 </div>
-                 <div className="space-y-4 pt-12">
-                   <div className="bg-slate-100 h-40 rounded-3xl flex items-center justify-center text-slate-400 text-3xl font-bold">Pixel Check</div>
-                   <div className="bg-blue-500 h-64 rounded-3xl flex items-center justify-center text-white text-5xl font-black shadow-2xl">QA 2</div>
-                 </div>
-               </div>
-            </div>
-            <div className="space-y-8 order-1 lg:order-2">
-              <h2 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">Our Triple-Check <br />Quality Control</h2>
-              <p className="text-lg text-slate-600 leading-relaxed">
-                Before your images ever reach you, they go through our signature three-stage verification process. We don't just "cut" images; we ensure they are technically perfect for any medium.
-              </p>
-              <div className="space-y-6">
-                {[
-                  { t: "300% Zoom Inspection", d: "We check anchor points at extreme zoom levels to ensure smoothness." },
-                  { t: "Platform Compliance", d: "Amazon, Shopify, and Print-ready specifications are strictly followed." },
-                  { t: "Manual Supervisor Review", d: "A senior editor reviews every single path before the final export." }
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-5">
-                    <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0 font-black">
-                      {i + 1}
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-slate-900 text-lg mb-1">{item.t}</h4>
-                      <p className="text-slate-500">{item.d}</p>
-                    </div>
-                  </div>
-                ))}
+                <span className="font-bold text-slate-700">{feature}</span>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Use Cases Section */}
-      <section className="py-24 bg-slate-950 text-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black mb-6">Built for Professionals</h2>
-            <p className="text-slate-400 text-lg">Optimized outputs for different industry standards.</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-10">
-             <div className="space-y-6 p-8 bg-white/5 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors">
-                <div className="text-4xl">🛒</div>
-                <h3 className="text-2xl font-bold">E-commerce Ready</h3>
-                <p className="text-slate-400">Pure white backgrounds and optimized file sizes for fast-loading web stores like Shopify and Amazon.</p>
-             </div>
-             <div className="space-y-6 p-8 bg-white/5 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors">
-                <div className="text-4xl">🖨️</div>
-                <h3 className="text-2xl font-bold">Print & Catalogs</h3>
-                <p className="text-slate-400">High-resolution CMYK paths ensuring your product looks stunning in high-end physical lookbooks.</p>
-             </div>
-             <div className="space-y-6 p-8 bg-white/5 rounded-3xl border border-white/10 hover:bg-white/10 transition-colors">
-                <div className="text-4xl">🎨</div>
-                <h3 className="text-2xl font-bold">Marketing Assets</h3>
-                <p className="text-slate-400">Layered PSD files with masks for graphic designers to easily swap backgrounds for social media ads.</p>
-             </div>
+      {/* Trust Section */}
+      <section className="py-24 bg-slate-50 border-y border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-black mb-12">Trusted by 5,000+ Brands Worldwide</h2>
+          <div className="flex flex-wrap justify-center gap-12 grayscale opacity-40">
+             <div className="text-2xl font-black tracking-tighter">AMAZON</div>
+             <div className="text-2xl font-black tracking-tighter">SHOPIFY</div>
+             <div className="text-2xl font-black tracking-tighter">NIKE</div>
+             <div className="text-2xl font-black tracking-tighter">ZARA</div>
+             <div className="text-2xl font-black tracking-tighter">EBAY</div>
           </div>
         </div>
       </section>
 
-      {/* Final CTA with Bulk Offer */}
-      <section className="py-32 bg-blue-600 relative overflow-hidden">
-        <div className="max-w-4xl mx-auto px-4 text-center space-y-12 relative z-10">
-          <h2 className="text-5xl md:text-7xl font-black text-white tracking-tighter leading-none">Need to edit 1,000+ images?</h2>
-          <p className="text-blue-100 text-2xl font-medium">Ask about our volume discounts and dedicated editor teams for long-term partnerships.</p>
-          <div className="flex flex-col sm:flex-row justify-center gap-6">
-            <Link to="/free-trial" className="px-16 py-6 bg-white text-blue-600 rounded-3xl font-black text-2xl hover:scale-105 transition-all shadow-2xl">
-              Try Us Free
-            </Link>
-            <Link to="/contact" className="px-16 py-6 bg-blue-900 text-white rounded-3xl font-black text-2xl hover:bg-black transition-all">
-              Bulk Quote
-            </Link>
-          </div>
-          <div className="pt-8 flex justify-center items-center gap-8 text-white/60 text-sm font-bold uppercase tracking-widest">
-             <span className="flex items-center gap-2">⚡ 24h Delivery</span>
-             <span className="flex items-center gap-2">🛡️ Secured Portal</span>
-             <span className="flex items-center gap-2">🔄 Unlimited Revisions</span>
-          </div>
-        </div>
+      {/* Final CTA */}
+      <section className="py-32 bg-blue-600 text-center relative overflow-hidden">
+         <div className="max-w-4xl mx-auto px-4 space-y-10 relative z-10">
+            <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter leading-none">Ready for Perfection?</h2>
+            <p className="text-blue-100 text-2xl font-medium">Try our service for free. No credit card, no risk.</p>
+            <Link to="/free-trial" className="inline-block px-16 py-8 bg-white text-blue-600 rounded-[2.5rem] font-black text-2xl hover:scale-110 transition-all shadow-2xl">Start Free Trial Now</Link>
+         </div>
       </section>
     </div>
   );
