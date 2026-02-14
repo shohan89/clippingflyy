@@ -15,21 +15,22 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close everything on route change
   useEffect(() => {
     setIsOpen(false);
     setActiveDropdown(null);
   }, [location]);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/90 backdrop-blur-xl shadow-lg py-3 border-b border-slate-100' : 'bg-transparent py-5'}`}>
+    <nav className={`fixed w-full z-[100] transition-all duration-500 ${scrolled ? 'bg-white/90 backdrop-blur-xl shadow-lg py-3 border-b border-slate-100' : 'bg-transparent py-5'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
+          <Link to="/" className="flex items-center space-x-2 group relative z-[101]">
             <div className="w-11 h-11 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform">
               <span className="text-white font-black text-2xl">P</span>
             </div>
-            <span className="text-2xl font-black text-slate-900 tracking-tighter">
+            <span className={`text-2xl font-black tracking-tighter transition-colors ${!scrolled && location.pathname === '/' ? 'text-white md:text-slate-900' : 'text-slate-900'}`}>
               PixelPerfect<span className="text-blue-600">Pro</span>
             </span>
           </Link>
@@ -44,20 +45,20 @@ const Navbar: React.FC = () => {
                 onMouseLeave={() => setActiveDropdown(null)}
               >
                 {item.children ? (
-                  <div className="flex items-center text-slate-700 hover:text-blue-600 font-bold cursor-pointer py-2 transition-colors">
+                  <div className={`flex items-center font-bold cursor-pointer py-2 transition-colors ${activeDropdown === item.label ? 'text-blue-600' : 'text-slate-700'}`}>
                     {item.label}
                     <svg className={`ml-1.5 w-4 h-4 transition-transform duration-300 ${activeDropdown === item.label ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
                     </svg>
                   </div>
                 ) : (
-                  <Link to={item.path} className={`text-slate-700 hover:text-blue-600 font-bold py-2 transition-colors ${location.pathname === item.path ? 'text-blue-600' : ''}`}>
+                  <Link to={item.path} className={`font-bold py-2 transition-colors ${location.pathname === item.path ? 'text-blue-600' : 'text-slate-700 hover:text-blue-600'}`}>
                     {item.label}
                   </Link>
                 )}
 
                 {item.children && activeDropdown === item.label && (
-                  <div className="absolute left-0 mt-0 w-64 bg-white rounded-3xl shadow-2xl border border-slate-100 py-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="absolute left-0 mt-0 w-64 bg-white rounded-3xl shadow-2xl border border-slate-100 py-4 animate-in fade-in slide-in-from-top-2 duration-200 z-[110]">
                     <div className="grid gap-1 px-2">
                       {item.children.map((child) => (
                         <Link
@@ -75,14 +76,14 @@ const Navbar: React.FC = () => {
             ))}
             <Link 
               to="/free-trial" 
-              className="bg-blue-600 text-white px-8 py-3.5 rounded-2xl font-black text-sm hover:bg-blue-700 transition-all transform hover:scale-105 active:scale-95 shadow-xl shadow-blue-200"
+              className="bg-blue-600 text-white px-8 py-3.5 rounded-2xl font-black text-sm hover:bg-blue-700 transition-all transform hover:scale-105 shadow-xl shadow-blue-200"
             >
               FREE TRIAL
             </Link>
           </div>
 
           {/* Mobile Toggle */}
-          <div className="md:hidden">
+          <div className="md:hidden relative z-[101]">
             <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-slate-900">
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {isOpen ? <path d="M6 18L18 6M6 6l12 12" strokeWidth="2.5" /> : <path d="M4 6h16M4 12h16m-7 6h7" strokeWidth="2.5" />}
@@ -92,22 +93,16 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <div className={`fixed inset-0 bg-white z-[60] transform transition-transform duration-500 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="p-8 h-full flex flex-col">
-          <div className="flex justify-between items-center mb-12">
-            <span className="text-2xl font-black">Menu</span>
-            <button onClick={() => setIsOpen(false)} className="p-2 bg-slate-100 rounded-full">
-               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" strokeWidth="2.5"/></svg>
-            </button>
-          </div>
+      {/* Mobile Menu Overlay */}
+      <div className={`fixed inset-0 bg-white z-[90] transform transition-transform duration-500 md:hidden ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="p-8 h-full flex flex-col pt-32">
           <div className="space-y-6 flex-grow overflow-y-auto">
             {NAVIGATION.map((item) => (
               <div key={item.label} className="border-b border-slate-100 pb-4">
                 {item.children ? (
                   <div className="space-y-4">
                     <span className="text-xs font-black text-slate-400 uppercase tracking-widest">{item.label}</span>
-                    <div className="grid gap-3 pl-4">
+                    <div className="grid gap-4 pl-4">
                       {item.children.map((child) => (
                         <Link key={child.label} to={child.path} className="text-xl font-bold text-slate-900">{child.label}</Link>
                       ))}
