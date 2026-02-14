@@ -10,10 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script>
-    /**
-     * White Page Fix: Polyfill process object for browser environment
-     * This prevents the "process is not defined" error in production.
-     */
     window.process = window.process || { env: { API_KEY: "" } };
     window.global = window;
   </script>
@@ -22,65 +18,20 @@
       font-family: 'Inter', sans-serif;
     }
     
-    @keyframes icon-bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
     }
     
-    @keyframes icon-spin-slow {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    
-    @keyframes icon-pulse-scale {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
     }
 
-    @keyframes icon-sway {
-      0%, 100% { transform: rotate(-5deg); }
-      50% { transform: rotate(5deg); }
-    }
-
-    @keyframes blob {
-      0% { transform: translate(0px, 0px) scale(1); }
-      33% { transform: translate(30px, -50px) scale(1.1); }
-      66% { transform: translate(-20px, 20px) scale(0.9); }
-      100% { transform: translate(0px, 0px) scale(1); }
-    }
-
-    .animate-blob {
-      animation: blob 7s infinite;
-    }
-
-    .animation-delay-2000 {
-      animation-delay: 2s;
-    }
-
-    .animate-icon-bounce { animation: icon-bounce 2.5s ease-in-out infinite; }
-    .animate-icon-spin-slow { animation: icon-spin-slow 12s linear infinite; }
-    .animate-icon-pulse-scale { animation: icon-pulse-scale 3s ease-in-out infinite; }
-    .animate-icon-sway { animation: icon-sway 3s ease-in-out infinite; }
-    
-    .hover-shine {
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .hover-shine::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transform: skewX(-25deg);
-      transition: 0.75s;
-    }
-    
-    .hover-shine:hover::after {
-      left: 150%;
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     .no-scrollbar::-webkit-scrollbar {
@@ -101,6 +52,7 @@
     "react-dom/client": "https://esm.sh/react-dom@^19.2.4/client",
     "@google/genai": "https://esm.sh/@google/genai@^1.41.0",
     "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+    "lottie-react": "https://esm.sh/lottie-react@^2.4.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
   }
 }
@@ -108,7 +60,6 @@
 </head>
 <body class="bg-slate-50 text-slate-900">
   <div id="root"></div>
-  <!-- IMPORTANT: Load the main entry point -->
   <script type="module" src="index.tsx"></script>
 </body>
 </html>

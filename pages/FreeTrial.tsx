@@ -28,13 +28,8 @@ const FreeTrial: React.FC = () => {
     setAnalysis(null);
 
     try {
-      // Safe access to API Key via window.process
-      const apiKey = (window as any).process?.env?.API_KEY;
-      if (!apiKey) {
-        throw new Error("API Key not configured");
-      }
-
-      const ai = new GoogleGenAI({ apiKey });
+      // Fix: Directly use process.env.API_KEY when initializing GoogleGenAI as per SDK instructions
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const file = files[0].file;
       const base64Data = await new Promise<string>((resolve) => {
         const reader = new FileReader();
