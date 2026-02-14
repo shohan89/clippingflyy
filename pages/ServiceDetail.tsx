@@ -1,10 +1,47 @@
 
 import React, { useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { SERVICES } from '../constants';
+import { SERVICES, SERVICE_PRICING_MAP } from '../constants';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
 
 // --- Specialized Component Sections ---
+
+const ServiceSpecificPricing: React.FC<{ slug: string }> = ({ slug }) => {
+  const pricingItems = SERVICE_PRICING_MAP[slug];
+  if (!pricingItems) return null;
+
+  return (
+    <div className="py-24 bg-white">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">Pricing & Complexity</h2>
+          <p className="text-slate-500 text-lg max-w-2xl mx-auto">
+            Transparent flat-rate pricing based on the technical difficulty of your assets.
+          </p>
+        </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {pricingItems.map((item, i) => (
+            <div key={i} className="p-8 bg-slate-50 rounded-[2.5rem] border border-slate-100 hover:shadow-xl hover:bg-white transition-all group">
+              <div className="flex justify-between items-start mb-6">
+                 <h4 className="text-xl font-black text-slate-900 group-hover:text-blue-600 transition-colors">{item.label}</h4>
+                 <div className="px-4 py-1 bg-blue-600 text-white rounded-full text-sm font-black shadow-lg">
+                   {item.price}
+                 </div>
+              </div>
+              <p className="text-slate-500 font-medium leading-relaxed">
+                {item.desc}
+              </p>
+              <div className="mt-8 pt-6 border-t border-slate-200 flex items-center justify-between text-xs font-black uppercase tracking-widest text-slate-400">
+                <span>⚡ 24h Delivery</span>
+                <span>🔄 Unlimited Rev.</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const ComparisonTable = () => (
   <div className="grid md:grid-cols-2 gap-8 my-16">
@@ -26,27 +63,6 @@ const ComparisonTable = () => (
     </div>
   </div>
 );
-
-const ClippingComplexity = () => {
-  const tiers = [
-    { t: "Basic", d: "Simple shapes (Books, Boxes)", p: "$0.49" },
-    { t: "Simple", d: "Curved edges (Shoes, Hats)", p: "$0.95" },
-    { t: "Medium", d: "Interior holes (Chairs, Bags)", p: "$2.50" },
-    { t: "Complex", d: "Intricate details (Jewelry, Bikes)", p: "$5.00" },
-    { t: "Super", d: "Custom complex (Nets, Mesh)", p: "Quote" }
-  ];
-  return (
-    <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mt-12">
-      {tiers.map((tier, i) => (
-        <div key={i} className="bg-white p-6 rounded-3xl border border-slate-100 text-center hover:shadow-xl transition-all">
-          <h4 className="font-black text-slate-900 mb-2">{tier.t}</h4>
-          <p className="text-xs text-slate-500 mb-4 h-8">{tier.d}</p>
-          <div className="text-xl font-black text-blue-600">{tier.p}</div>
-        </div>
-      ))}
-    </div>
-  );
-};
 
 const MarketplaceCompliance = () => (
   <div className="bg-slate-900 rounded-[3rem] p-12 text-white my-20">
@@ -113,52 +129,74 @@ const ServiceDetail: React.FC = () => {
         return (
           <>
             <ComparisonTable />
-            <h3 className="text-4xl font-black text-center mt-24 mb-6">Pricing Complexity</h3>
-            <p className="text-center text-slate-500 mb-12">Fair and transparent pricing based on the time required per path.</p>
-            <ClippingComplexity />
+            <ServiceSpecificPricing slug={slug} />
           </>
         );
       case 'background-removal':
-        return <MarketplaceCompliance />;
+        return (
+          <>
+            <MarketplaceCompliance />
+            <ServiceSpecificPricing slug={slug} />
+          </>
+        );
       case 'ghost-mannequin':
-        return <GhostMannequinSteps />;
+        return (
+          <>
+            <GhostMannequinSteps />
+            <ServiceSpecificPricing slug={slug} />
+          </>
+        );
       case 'color-change':
-        return <ColorChangeBenefits />;
+        return (
+          <>
+            <ColorChangeBenefits />
+            <ServiceSpecificPricing slug={slug} />
+          </>
+        );
       case 'photo-retouching':
         return (
-          <div className="grid md:grid-cols-2 gap-12 my-24">
-            <div className="space-y-6">
-              <h3 className="text-3xl font-black">E-commerce Retouching</h3>
-              <p className="text-slate-600 leading-relaxed">Focus on dust removal, scratch fixing, and shape correction to make products look studio-perfect for catalogs.</p>
-              <ul className="space-y-3 font-bold text-slate-800">
-                <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Dust & Scratch Removal</li>
-                <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Shape Alignment (Liquify)</li>
-                <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Reflection Removal</li>
-              </ul>
+          <>
+            <div className="grid md:grid-cols-2 gap-12 my-24">
+              <div className="space-y-6">
+                <h3 className="text-3xl font-black">E-commerce Retouching</h3>
+                <p className="text-slate-600 leading-relaxed">Focus on dust removal, scratch fixing, and shape correction to make products look studio-perfect for catalogs.</p>
+                <ul className="space-y-3 font-bold text-slate-800">
+                  <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Dust & Scratch Removal</li>
+                  <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Shape Alignment (Liquify)</li>
+                  <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Reflection Removal</li>
+                </ul>
+              </div>
+              <div className="space-y-6">
+                <h3 className="text-3xl font-black">Model & Fashion</h3>
+                <p className="text-slate-600 leading-relaxed">High-end skin retouching using frequency separation while preserving natural pores and textures.</p>
+                <ul className="space-y-3 font-bold text-slate-800">
+                  <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Frequency Separation</li>
+                  <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Digital Makeup Enhancement</li>
+                  <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Clothing Crease Removal</li>
+                </ul>
+              </div>
             </div>
-            <div className="space-y-6">
-              <h3 className="text-3xl font-black">Model & Fashion</h3>
-              <p className="text-slate-600 leading-relaxed">High-end skin retouching using frequency separation while preserving natural pores and textures.</p>
-              <ul className="space-y-3 font-bold text-slate-800">
-                <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Frequency Separation</li>
-                <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Digital Makeup Enhancement</li>
-                <li className="flex items-center gap-3"><span className="text-blue-600">★</span> Clothing Crease Removal</li>
-              </ul>
-            </div>
-          </div>
+            <ServiceSpecificPricing slug={slug} />
+          </>
         );
       case 'image-masking':
         return (
-          <div className="py-20 text-center space-y-8">
-            <h3 className="text-4xl font-black">Mastering the Intricate</h3>
-            <p className="text-xl text-slate-500 max-w-3xl mx-auto">Standard paths fail at hair and fur. We use advanced alpha channel masking to ensure every single strand is preserved perfectly against any new background.</p>
-            <div className="flex justify-center gap-20 py-10">
-               <div><div className="text-5xl mb-2">🐈</div><div className="font-bold">Fur & Pet</div></div>
-               <div><div className="text-5xl mb-2">💇</div><div className="font-bold">Model Hair</div></div>
-               <div><div className="text-5xl mb-2">🌿</div><div className="font-bold">Fine Foliage</div></div>
+          <>
+            <div className="py-20 text-center space-y-8">
+              <h3 className="text-4xl font-black">Mastering the Intricate</h3>
+              <p className="text-xl text-slate-500 max-w-3xl mx-auto">Standard paths fail at hair and fur. We use advanced alpha channel masking to ensure every single strand is preserved perfectly against any new background.</p>
+              <div className="flex justify-center gap-20 py-10">
+                 <div><div className="text-5xl mb-2">🐈</div><div className="font-bold">Fur & Pet</div></div>
+                 <div><div className="text-5xl mb-2">💇</div><div className="font-bold">Model Hair</div></div>
+                 <div><div className="text-5xl mb-2">🌿</div><div className="font-bold">Fine Foliage</div></div>
+              </div>
             </div>
-          </div>
+            <ServiceSpecificPricing slug={slug} />
+          </>
         );
+      case 'drop-shadow':
+      case 'mirror-effect':
+        return <ServiceSpecificPricing slug={slug} />;
       default:
         return <div className="py-20 text-center text-slate-400">Custom technical specifications available upon request.</div>;
     }

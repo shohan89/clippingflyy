@@ -11,6 +11,7 @@ export interface Industry {
 export interface DetailedPricingItem {
   label: string;
   price: string;
+  desc?: string;
 }
 
 export interface DetailedPricingCategory {
@@ -29,30 +30,51 @@ export const INDUSTRIES: Industry[] = [
   { id: 'ind-6', title: 'Product Photography', description: 'Studio-grade finishing for electronics.', icon: 'ind-product' }
 ];
 
-export const DETAILED_PRICING: DetailedPricingCategory[] = [
-  {
-    title: 'Clipping Path Services',
-    basePrice: '$0.49 per image',
-    imageUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=600',
-    items: [
-      { label: 'Basic (Round/Square)', price: '$0.49' },
-      { label: 'Simple (Curved)', price: '$0.95' },
-      { label: 'Medium (Multiple Holes)', price: '$2.50' },
-      { label: 'Complex (Many Details)', price: '$5.00' },
-      { label: 'Super Complex (Jewelry)', price: 'Custom' }
-    ]
-  },
-  {
-    title: 'Ghost Mannequin Services',
-    basePrice: '$1.25 per image',
-    imageUrl: 'https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&q=80&w=600',
-    items: [
-      { label: 'Neck Joint', price: '$1.75' },
-      { label: '3D Ghost Effect', price: '$2.99' },
-      { label: 'Sleeve Alignment', price: '$2.50' }
-    ]
-  }
-];
+export const SERVICE_PRICING_MAP: Record<string, DetailedPricingItem[]> = {
+  'clipping-path': [
+    { label: 'Basic Path', price: '$0.49', desc: 'Simple shapes like mobile, book, box.' },
+    { label: 'Simple Path', price: '$0.95', desc: 'Slightly curved items like shoes, simple jewelry.' },
+    { label: 'Medium Path', price: '$2.50', desc: 'Multiple holes items like chairs, complex bags.' },
+    { label: 'Complex Path', price: '$5.00', desc: 'Bicycles, complex jewelry, engine parts.' },
+    { label: 'Super Complex', price: 'Custom', desc: 'Intricate designs like bridal wear or mesh.' }
+  ],
+  'background-removal': [
+    { label: 'Pure White BG', price: '$0.45', desc: 'Optimized for Amazon and eBay.' },
+    { label: 'Transparent PNG', price: '$0.55', desc: 'Layered files for web design.' },
+    { label: 'Custom Background', price: '$1.20', desc: 'Composite with realistic shadow.' }
+  ],
+  'photo-retouching': [
+    { label: 'Basic Product', price: '$1.50', desc: 'Dust, scratch removal and brightness.' },
+    { label: 'Model Retouching', price: '$3.50', desc: 'Skin smoothing and blemish removal.' },
+    { label: 'Jewelry Polishing', price: '$5.00', desc: 'High-end shine and diamond enhancement.' },
+    { label: 'High-End Fashion', price: '$8.00+', desc: 'Magazine quality frequency separation.' }
+  ],
+  'image-masking': [
+    { label: 'Standard Masking', price: '$1.20', desc: 'Simple hair or fur edges.' },
+    { label: 'Complex Masking', price: '$2.99', desc: 'Flying hair, smoke or translucent items.' },
+    { label: 'Layer Masking', price: '$4.50', desc: 'Advanced alpha channel processing.' }
+  ],
+  'drop-shadow': [
+    { label: 'Natural Shadow', price: '$0.60', desc: 'Preserving existing camera shadow.' },
+    { label: 'Drop Shadow', price: '$0.75', desc: 'Created shadow for floating look.' },
+    { label: 'Reflection Shadow', price: '$1.25', desc: 'Mirror-like 3D depth effect.' }
+  ],
+  'ghost-mannequin': [
+    { label: 'Standard Neck Joint', price: '$1.25', desc: 'Combining front and back neck shots.' },
+    { label: 'Bottom Joint', price: '$2.50', desc: 'Adding bottom details for skirts/trousers.' },
+    { label: '3D Hollow Effect', price: '$4.00', desc: 'Full mannequin removal with depth.' }
+  ],
+  'mirror-effect': [
+    { label: 'Simple Mirror', price: '$1.00', desc: 'Direct reflection on flat surface.' },
+    { label: 'Perspective Mirror', price: '$2.50', desc: 'Reflection on angled or curved floor.' },
+    { label: 'High Gloss Finish', price: '$4.00', desc: 'Polished look for luxury cosmetics.' }
+  ],
+  'color-change': [
+    { label: 'Single Color Swap', price: '$1.50', desc: 'Changing one solid color to another.' },
+    { label: 'Multi-Variant', price: '$1.20', desc: 'Creating multiple SKUs from one shot.' },
+    { label: 'Pattern Overlay', price: '$3.50', desc: 'Applying textures and complex patterns.' }
+  ]
+};
 
 export const SERVICES: Service[] = [
   {
@@ -169,4 +191,26 @@ export const TESTIMONIALS: Testimonial[] = [
 
 export const PRICING_PLANS = [
   { name: "Starter", price: "$99", period: "per mo", description: "50 images.", features: ["24h delivery"], cta: "Start Trial", highlight: false }
+];
+
+// Added missing DETAILED_PRICING export used in DetailedPricingSection.tsx
+export const DETAILED_PRICING: DetailedPricingCategory[] = [
+  {
+    title: 'Clipping Path',
+    basePrice: '$0.49 per photo',
+    imageUrl: 'https://images.unsplash.com/photo-1542496658-e33a6d0d50f6?auto=format&fit=crop&q=80&w=800',
+    items: SERVICE_PRICING_MAP['clipping-path']
+  },
+  {
+    title: 'Background Removal',
+    basePrice: '$0.45 per photo',
+    imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800',
+    items: SERVICE_PRICING_MAP['background-removal']
+  },
+  {
+    title: 'Photo Retouching',
+    basePrice: '$1.50 per photo',
+    imageUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=800',
+    items: SERVICE_PRICING_MAP['photo-retouching']
+  }
 ];
