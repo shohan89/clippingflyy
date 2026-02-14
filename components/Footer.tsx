@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-4">
               {SERVICES.map((s) => (
                 <li key={s.id}>
-                  <Link to={`/services/${s.slug}`} className="hover:text-white transition-colors">
+                  <Link to={`/${s.slug}`} className="hover:text-white transition-colors">
                     {s.title}
                   </Link>
                 </li>
@@ -55,7 +55,7 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="text-white font-bold mb-6">Stay Updated</h4>
             <p className="text-sm text-slate-400 mb-4">Subscribe to get editing tips and special offers.</p>
-            <form className="flex">
+            <form className="flex" onSubmit={(e) => e.preventDefault()}>
               <input 
                 type="email" 
                 placeholder="Your email" 

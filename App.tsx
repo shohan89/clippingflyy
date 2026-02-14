@@ -15,14 +15,16 @@ const App: React.FC = () => {
     <Router>
       <Layout>
         <Routes>
+          {/* Specific static routes MUST come first */}
           <Route path="/" element={<Home />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
-          {/* Flat structure for better SEO and professional URLs */}
-          <Route path="/:slug" element={<ServiceDetail />} />
           <Route path="/free-trial" element={<FreeTrial />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/contact" element={<Contact />} />
+          
+          {/* Dynamic service route moved to bottom to prevent hijacking */}
+          <Route path="/:slug" element={<ServiceDetail />} />
         </Routes>
       </Layout>
     </Router>
