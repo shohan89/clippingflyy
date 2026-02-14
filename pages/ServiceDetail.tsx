@@ -4,7 +4,6 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { SERVICES } from '../constants';
 import BeforeAfterSlider from '../components/BeforeAfterSlider';
 
-// Interactive SVG showing a pen tool path for visual engagement
 const PathTracerAnimation: React.FC = () => (
   <svg viewBox="0 0 400 300" className="w-full h-full opacity-30 absolute inset-0 pointer-events-none">
     <path 
@@ -28,22 +27,21 @@ const PathTracerAnimation: React.FC = () => (
 const ServiceDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   
-  // Directly find the service to prevent blank page/redirect loops during state updates
+  // Directly find the service to prevent blank page/redirect loops
   const service = SERVICES.find(s => s.slug === slug);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [slug]);
 
-  // If service is not found, only then redirect
   if (!service) return <Navigate to="/" replace />;
 
   const clippingTiers = [
-    { title: "Basic", desc: "Simple shapes like round objects, boxes, or square frames.", price: "$0.49", icon: "📦" },
-    { title: "Simple", desc: "Curved objects with few holes like handbags or plates.", price: "$1.25", icon: "👜" },
-    { title: "Medium", desc: "Objects with 2-3 interior holes like shoes or chairs.", price: "$2.49", icon: "👟" },
-    { title: "Complex", desc: "Intricate items like bicycles, jewelry, or machinery.", price: "$6.49", icon: "🚲" },
-    { title: "Super Complex", desc: "Extremely detailed items like nets, mesh, or complex jewelry.", price: "$14.49", icon: "💎" }
+    { title: "Basic", desc: "Simple shapes like round objects or boxes.", price: "$0.49", icon: "📦" },
+    { title: "Simple", desc: "Curved objects with few holes like handbags.", price: "$1.25", icon: "👜" },
+    { title: "Medium", desc: "Objects with 2-3 interior holes like shoes.", price: "$2.49", icon: "👟" },
+    { title: "Complex", desc: "Intricate items like bicycles or jewelry.", price: "$6.49", icon: "🚲" },
+    { title: "Super Complex", desc: "Extremely detailed items like nets or mesh.", price: "$14.49", icon: "💎" }
   ];
 
   return (
@@ -58,7 +56,7 @@ const ServiceDetail: React.FC = () => {
             <div className="space-y-10 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600/20 text-blue-400 rounded-full text-xs font-black tracking-widest uppercase border border-blue-500/30">
                 <span className="w-2 h-2 bg-blue-500 rounded-full animate-ping" />
-                Premium Quality
+                Pixel-Perfect Editing
               </div>
               <h1 className="text-5xl md:text-8xl font-black text-white leading-none tracking-tighter">
                 {service.title.split(' ')[0]} <br />
@@ -79,7 +77,7 @@ const ServiceDetail: React.FC = () => {
 
             <div className="relative">
               <div className="absolute -inset-4 bg-blue-500/20 blur-3xl rounded-full" />
-              <div className="relative glass-card p-3 rounded-[4rem] shadow-2xl border-white/10">
+              <div className="relative glass-card p-3 rounded-[4rem] shadow-2xl border-white/10 overflow-hidden">
                  <BeforeAfterSlider 
                     beforeImage={`${service.imageUrl}&grayscale=1&sat=-100`}
                     afterImage={service.imageUrl}
@@ -90,8 +88,24 @@ const ServiceDetail: React.FC = () => {
         </div>
       </section>
 
-      {/* Interactive Complexity Grid (Only for Clipping Path) */}
-      {slug === 'clipping-path' && (
+      {/* Features Grid */}
+      <section className="py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {service.features.map((feature, i) => (
+              <div key={i} className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex items-start gap-4">
+                <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 flex-shrink-0">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" strokeWidth="3" strokeLinecap="round"/></svg>
+                </div>
+                <span className="font-bold text-slate-700">{feature}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Conditional Complexity Section for Clipping Path */}
+      {service.slug === 'clipping-path' && (
         <section className="py-32 bg-white">
           <div className="max-w-7xl mx-auto px-4">
             <div className="text-center mb-24 space-y-6">
@@ -116,10 +130,12 @@ const ServiceDetail: React.FC = () => {
       )}
 
       {/* CTA Section */}
-      <section className="py-32 bg-blue-600 text-center">
-         <div className="max-w-4xl mx-auto px-4 space-y-10">
+      <section className="py-32 bg-blue-600 text-center relative overflow-hidden">
+         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent)]" />
+         <div className="max-w-4xl mx-auto px-4 space-y-10 relative z-10">
             <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter leading-none">Ready for Perfection?</h2>
-            <Link to="/free-trial" className="inline-block px-16 py-8 bg-white text-blue-600 rounded-3xl font-black text-2xl hover:scale-110 transition-all shadow-2xl">Start Trial Now</Link>
+            <p className="text-blue-100 text-2xl font-medium">Join 500+ brands scaling their production with PixelPerfect Pro.</p>
+            <Link to="/free-trial" className="inline-block px-16 py-8 bg-white text-blue-600 rounded-3xl font-black text-2xl hover:scale-110 transition-all shadow-2xl">Start Free Trial Now</Link>
          </div>
       </section>
     </div>
