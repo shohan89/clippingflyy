@@ -36,10 +36,10 @@ export const DETAILED_PRICING: DetailedPricingCategory[] = [
     imageUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=600',
     items: [
       { label: 'Basic (Round/Square)', price: '$0.49' },
-      { label: 'Simple (Curved)', price: '$1.25' },
-      { label: 'Medium (Multiple Holes)', price: '$2.49' },
-      { label: 'Complex (Many Details)', price: '$6.49' },
-      { label: 'Super Complex (Jewelry)', price: '$14.49' }
+      { label: 'Simple (Curved)', price: '$0.95' },
+      { label: 'Medium (Multiple Holes)', price: '$2.50' },
+      { label: 'Complex (Many Details)', price: '$5.00' },
+      { label: 'Super Complex (Jewelry)', price: 'Custom' }
     ]
   },
   {
