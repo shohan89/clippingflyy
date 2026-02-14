@@ -21,47 +21,49 @@ const Navbar: React.FC = () => {
   }, [location]);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-5'}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-white/90 backdrop-blur-xl shadow-lg py-3 border-b border-slate-100' : 'bg-transparent py-5'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-xl">P</span>
+          <Link to="/" className="flex items-center space-x-2 group">
+            <div className="w-11 h-11 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform">
+              <span className="text-white font-black text-2xl">P</span>
             </div>
-            <span className={`text-xl font-bold ${scrolled ? 'text-slate-900' : 'text-slate-900'} lg:inline hidden`}>
-              PixelPerfect <span className="text-blue-600">Pro</span>
+            <span className="text-2xl font-black text-slate-900 tracking-tighter">
+              PixelPerfect<span className="text-blue-600">Pro</span>
             </span>
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-10">
             {NAVIGATION.map((item) => (
-              <div key={item.label} className="relative group">
+              <div 
+                key={item.label} 
+                className="relative"
+                onMouseEnter={() => item.children && setActiveDropdown(item.label)}
+                onMouseLeave={() => setActiveDropdown(null)}
+              >
                 {item.children ? (
-                  <button 
-                    onClick={() => setActiveDropdown(activeDropdown === item.label ? null : item.label)}
-                    className="flex items-center text-slate-700 hover:text-blue-600 font-medium transition-colors"
-                  >
+                  <div className="flex items-center text-slate-700 hover:text-blue-600 font-bold cursor-pointer py-2 transition-colors">
                     {item.label}
-                    <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    <svg className={`ml-1.5 w-4 h-4 transition-transform duration-300 ${activeDropdown === item.label ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
                     </svg>
-                  </button>
+                  </div>
                 ) : (
-                  <Link to={item.path} className="text-slate-700 hover:text-blue-600 font-medium transition-colors">
+                  <Link to={item.path} className={`text-slate-700 hover:text-blue-600 font-bold py-2 transition-colors ${location.pathname === item.path ? 'text-blue-600' : ''}`}>
                     {item.label}
                   </Link>
                 )}
 
-                {item.children && (
-                  <div className={`absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 transition-all duration-200 ${activeDropdown === item.label ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'}`}>
-                    <div className="py-2">
+                {item.children && activeDropdown === item.label && (
+                  <div className="absolute left-0 mt-0 w-64 bg-white rounded-3xl shadow-2xl border border-slate-100 py-4 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="grid gap-1 px-2">
                       {item.children.map((child) => (
                         <Link
                           key={child.label}
                           to={child.path}
-                          className="block px-4 py-2 text-sm text-slate-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
+                          className="px-4 py-3 text-sm font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-600 rounded-2xl transition-all"
                         >
                           {child.label}
                         </Link>
@@ -73,57 +75,52 @@ const Navbar: React.FC = () => {
             ))}
             <Link 
               to="/free-trial" 
-              className="bg-blue-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-blue-700 transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-blue-200"
+              className="bg-blue-600 text-white px-8 py-3.5 rounded-2xl font-black text-sm hover:bg-blue-700 transition-all transform hover:scale-105 active:scale-95 shadow-xl shadow-blue-200"
             >
-              Free Trial
+              FREE TRIAL
             </Link>
           </div>
 
-          {/* Mobile Menu Toggle */}
-          <div className="md:hidden flex items-center">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-slate-900 focus:outline-none">
+          {/* Mobile Toggle */}
+          <div className="md:hidden">
+            <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-slate-900">
               <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                {isOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-                )}
+                {isOpen ? <path d="M6 18L18 6M6 6l12 12" strokeWidth="2.5" /> : <path d="M4 6h16M4 12h16m-7 6h7" strokeWidth="2.5" />}
               </svg>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Sidebar */}
-      <div className={`fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity md:hidden ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`} onClick={() => setIsOpen(false)} />
-      <div className={`fixed top-0 right-0 h-full w-4/5 bg-white z-50 transform transition-transform duration-300 md:hidden ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="p-8">
-          <div className="flex justify-between items-center mb-8">
-            <span className="text-xl font-bold">Menu</span>
-            <button onClick={() => setIsOpen(false)} className="text-slate-500">
-               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+      {/* Mobile Menu */}
+      <div className={`fixed inset-0 bg-white z-[60] transform transition-transform duration-500 ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="p-8 h-full flex flex-col">
+          <div className="flex justify-between items-center mb-12">
+            <span className="text-2xl font-black">Menu</span>
+            <button onClick={() => setIsOpen(false)} className="p-2 bg-slate-100 rounded-full">
+               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" strokeWidth="2.5"/></svg>
             </button>
           </div>
-          <div className="flex flex-col space-y-4">
+          <div className="space-y-6 flex-grow overflow-y-auto">
             {NAVIGATION.map((item) => (
-              <div key={item.label}>
+              <div key={item.label} className="border-b border-slate-100 pb-4">
                 {item.children ? (
-                  <div>
-                    <span className="text-lg font-bold text-slate-400 uppercase text-xs tracking-wider">{item.label}</span>
-                    <div className="mt-2 ml-4 flex flex-col space-y-2">
+                  <div className="space-y-4">
+                    <span className="text-xs font-black text-slate-400 uppercase tracking-widest">{item.label}</span>
+                    <div className="grid gap-3 pl-4">
                       {item.children.map((child) => (
-                        <Link key={child.label} to={child.path} className="text-lg text-slate-700">{child.label}</Link>
+                        <Link key={child.label} to={child.path} className="text-xl font-bold text-slate-900">{child.label}</Link>
                       ))}
                     </div>
                   </div>
                 ) : (
-                  <Link to={item.path} className="text-lg font-medium text-slate-700">{item.label}</Link>
+                  <Link to={item.path} className="text-3xl font-black text-slate-900 block">{item.label}</Link>
                 )}
               </div>
             ))}
-            <Link to="/free-trial" className="w-full bg-blue-600 text-white text-center py-3 rounded-xl font-bold">Start Free Trial</Link>
+          </div>
+          <div className="pt-8">
+            <Link to="/free-trial" className="block w-full bg-blue-600 text-white text-center py-6 rounded-3xl font-black text-xl shadow-2xl">Start Free Trial</Link>
           </div>
         </div>
       </div>

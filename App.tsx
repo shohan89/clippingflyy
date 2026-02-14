@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import HowItWorks from './pages/HowItWorks';
@@ -17,7 +17,8 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/how-it-works" element={<HowItWorks />} />
-          <Route path="/services/:slug" element={<ServiceDetail />} />
+          {/* Flat structure for better SEO and professional URLs */}
+          <Route path="/:slug" element={<ServiceDetail />} />
           <Route path="/free-trial" element={<FreeTrial />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/faq" element={<FAQ />} />
