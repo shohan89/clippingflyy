@@ -9,6 +9,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    // Prevent "process is not defined" error in browser environments
+    window.process = { env: { API_KEY: "" } };
+  </script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
